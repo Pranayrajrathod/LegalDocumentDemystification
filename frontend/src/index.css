@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #222;
+  color: white;
+  padding: 10px 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
+  background: #eee;
+  margin-top: 20px;
+}

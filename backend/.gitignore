@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.db
+*.sqlite3
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Environment variables
+*.env
+
+# Logs
+*.log
+logs/
+*.out
+*.err
+
+# Uploads and temporary files
+uploads/
+tmp/
+*.tmp
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Docker
+*.pid
+*.tar

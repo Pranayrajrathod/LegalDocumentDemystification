@@ -1,0 +1,16 @@
+### Health check
+GET http://127.0.0.1:5000/ping
+
+### Upload a ToS PDF
+POST http://127.0.0.1:5000/upload
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="TheTwitterUserAgreement_1.pdf"
+Content-Type: application/pdf
+
+< E:\Downloads\TheTwitterUserAgreement_1.pdf
+--MyBoundary--
+
+### Get analysis history
+GET http://127.0.0.1:5000/history
