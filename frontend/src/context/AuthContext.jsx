@@ -1,26 +1,16 @@
-import { createContext, useState } from "react";
+import React, { createContext, useContext } from 'react';
 
-// Create Context
-export const AuthContext = createContext();
+// This is a placeholder for future authentication logic.
+const AuthContext = createContext();
 
-// Provider Component
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const useAuth = () => useContext(AuthContext);
 
-  // Example: login and logout functions (can be connected to backend later)
-  const login = (userData) => {
-    setUser(userData);
-    // Could also store in localStorage if persistence is needed
-  };
+export const AuthProvider = ({ children }) => {
+  const user = null; // Placeholder for user state
+  const login = () => console.log('Login function not implemented');
+  const logout = () => console.log('Logout function not implemented');
 
-  const logout = () => {
-    setUser(null);
-    // Could also clear localStorage here
-  };
+  const value = { user, login, logout };
 
-  return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

@@ -1,6 +1,8 @@
+/* You can keep this for very basic global overrides if needed */
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* A light grey background from Bootstrap variables */
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 .navbar {

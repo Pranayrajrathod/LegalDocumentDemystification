@@ -1,57 +1,27 @@
-import os
-from pymongo import MongoClient
+from flask import current_app
+from pymongo import DESCENDING
 
-# --- MongoDB setup ---
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/tos_analyser")
-client = MongoClient(MONGO_URI)
-db = client.get_database("tos_analyser")
-
-
-def chatbot_response(user_message: str) -> str:
+def get_chatbot_response(user_message: str) -> str:
+    db = current_app.config["db"]
     message = user_message.lower().strip()
+    latest_doc = db.tos_results.find_one(sort=[("createdAt", DESCENDING)])
 
-    # --- 1) Get the latest uploaded document ---
-    doc = db.tos_results.find_one(sort=[("_id", -1)])  # latest entry
+    if not latest_doc:
+        return "Please analyze a document first."
 
-    if doc:
-        # User asks for a summary
-        if any(k in message for k in ["summary", "overview", "explain", "what is this"]):
-            return f"📑 Here’s a summary of your last document:\n\n{doc.get('summary', 'No summary available.')}"
+    filename = latest_doc.get('filename', 'the last document')
 
-        # User asks for risks / red flags
-        if any(k in message for k in ["risk", "red flag", "issues", "problems", "warning"]):
-            red_flags = doc.get("red_flags", [])
-            if red_flags:
-                return "⚠️ Key risks I found:\n- " + "\n- ".join(red_flags)
-            else:
-                return "✅ No major risks were flagged in the last document."
+    if any(k in message for k in ["summary", "overview", "explain"]):
+        summary = latest_doc.get('summary', 'No summary was generated.')
+        return f"📑 Summary for '{filename}':\n\n{summary}"
 
-        # User asks about rights, obligations, license
-        if any(k in message for k in ["rights", "obligations", "responsibilities", "license"]):
-            return (
-                "From the analyzed document, you have certain responsibilities (like following the platform’s rules) "
-                "and limited rights (like using their services under their terms). Companies usually grant themselves "
-                "a license to use your content — check carefully if this applies."
-            )
+    if any(k in message for k in ["risk", "red flag", "issue"]):
+        red_flags = latest_doc.get("red_flags", [])
+        valid_flags = [flag for flag in red_flags if flag]
+        if valid_flags:
+            flags_list = "\n- ".join(valid_flags)
+            return f"⚠️ Potential risks for '{filename}':\n\n- {flags_list}"
+        else:
+            return f"✅ No specific red flags were found for '{filename}'."
 
-    # --- 2) Rule-based answers (no document needed) ---
-    context_keywords = [
-        "terms", "service", "privacy", "agreement", "policy",
-        "contract", "tos", "clauses", "conditions"
-    ]
-    if any(keyword in message for keyword in context_keywords):
-        return (
-            "📌 This looks like a Terms of Service question. These documents usually explain:\n"
-            "- ✅ What rights you have as a user\n"
-            "- ⚠️ What risks or limitations you accept\n"
-            "- 📑 How your data may be used (Privacy Policy)\n\n"
-            "Try asking me: 'Show me risks in my last upload' or 'Give me a summary'."
-        )
-
-    # --- 3) Default response (out of context) ---
-    return (
-        "🤖 I’m here to help explain Terms of Service, Privacy Policies, and Agreements.\n"
-        "Please ask something like:\n"
-        "- 'What risks are there?'\n"
-        "- 'What rights do I have?'\n"
-    )
+    return "I can answer questions about the latest document. Try asking 'what are the risks?' or 'give me a summary'."

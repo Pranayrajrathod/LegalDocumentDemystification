@@ -1,15 +1,20 @@
-export default function Footer() {
+import React from 'react';
+import anantaLogo from '../assets/ananta.jpg';
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-dark text-light text-center py-3 mt-auto">
+    <footer className="footer bg-dark text-white text-center py-3 mt-auto">
       <div className="container">
-        <p className="mb-1">© 2025 ToS Analyzer | All Rights Reserved</p>
-        <small className="text-muted">
-          <span className="text-info">Flask</span>,and{" "}
-          <span className="text-info">React</span>, and{" "}
-          <span className="text-info">MongoDB</span>,and{" "}
-          <span className="text-info">Gemini</span>
-        </small>
+        <p className="mb-1">&copy; {currentYear} TOS Analyzer. All Rights Reserved.</p>
+        <div className="d-flex align-items-center justify-content-center gap-2">
+          <span>Developed by Team</span>
+          <img src={anantaLogo} alt="Team Ananta" className="team-logo" />
+          <strong>Ananta</strong>
+        </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

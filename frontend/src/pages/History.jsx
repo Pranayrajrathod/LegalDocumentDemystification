@@ -1,71 +1,55 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import DocumentCard from '../components/DocumentCard';
 
-export default function History() {
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+const History = () => {
   const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch history from backend
-    fetch("http://localhost:5000/history")
-      .then((res) => res.json())
-      .then((data) => {
-        setHistory(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/history`);
+        setHistory(response.data);
+      } catch (err) {
+        setError('Failed to fetch analysis history.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchHistory();
   }, []);
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="container my-5 text-center">
-        <div className="spinner-border text-primary" role="status"></div>
-        <p className="mt-3">Loading history...</p>
-      </div>
+        <div className="text-center my-5">
+            <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+            <h4 className="mt-2">Loading History...</h4>
+        </div>
     );
   }
 
-  return (
-    <div className="container my-5">
-      <h1 className="fw-bold mb-4 text-center">History</h1>
+  if (error) return <div className="alert alert-danger"><strong>Error:</strong> {error}</div>;
 
-      {history.length === 0 ? (
-        <div className="text-center">
-          <div className="alert alert-warning" role="alert">
-            No history found. You haven’t uploaded any documents yet.
-          </div>
-          <Link to="/upload" className="btn btn-primary">
-            Upload a Document
-          </Link>
+  return (
+    <div>
+      <h2 className="mb-4">Analysis History</h2>
+      {history.length > 0 ? (
+        <div>
+          {history.map((doc) => (
+            <DocumentCard key={doc._id} document={doc} />
+          ))}
         </div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-bordered table-hover">
-            <thead className="table-dark">
-              <tr>
-                <th>Filename</th>
-                <th>Summary</th>
-                <th>Red Flags</th>
-              </tr>
-            </thead>
-            <tbody>
-              {history.map((doc, idx) => (
-                <tr key={idx}>
-                  <td>{doc.filename}</td>
-                  <td>{doc.summary}</td>
-                  <td>
-                    <ul className="mb-0">
-                      {doc.red_flags.map((flag, i) => (
-                        <li key={i}>{flag}</li>
-                      ))}
-                    </ul>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <p className="lead text-muted text-center my-5">You have no past analyses.</p>
       )}
     </div>
   );
-}
+};
+
+export default History;

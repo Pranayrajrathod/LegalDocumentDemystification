@@ -1,126 +1,87 @@
-import { useState } from "react";
-import uploadimg from "../assets/uploadimg.png";
-export default function Upload() {
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDocuments } from '../context/DocumentContext';
+import uploadImage from '../assets/uploadimg.png';
+
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+const Upload = () => {
   const [file, setFile] = useState(null);
-  const [response, setResponse] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [text, setText] = useState('');
+  const [activeTab, setActiveTab] = useState('file');
+  const navigate = useNavigate();
+  const { setAnalysisResult, setIsLoading, setError, isLoading, error } = useDocuments();
 
-  const handleFileChange = (e) => setFile(e.target.files[0]);
-
-  const handleUpload = async () => {
-    if (!file) return alert("Please select a file");
-
-    setLoading(true);
-    setResponse(null);
-
-    const formData = new FormData();
-    formData.append("file", file);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setAnalysisResult(null);
 
     try {
-      const res = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      setResponse(data);
+      let response;
+      if (activeTab === 'file' && file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        response = await axios.post(`${API_URL}/analyze`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else if (activeTab === 'text' && text) {
+        response = await axios.post(`${API_URL}/analyze`, { text });
+      } else {
+        setError('Please select a file or paste some text.');
+        setIsLoading(false);
+        return;
+      }
+      setAnalysisResult(response.data);
+      navigate('/dashboard');
     } catch (err) {
-      console.error(err);
-      setResponse({ error: "Failed to upload or analyze document." });
+      setError(err.response?.data?.error || 'An error occurred during analysis.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <div className="text-center mb-3">
-                <img 
-                  src={uploadimg} 
-                  alt="Upload" 
-                  className="img-fluid" 
-                  style={{ maxWidth: "300px" }} 
-                />
-              </div>
-              <h2 className="card-title mb-4 text-center">Upload Document</h2>
+    <div className="row align-items-center">
+        <div className="col-lg-7">
+            <h2>Analyze a New Document</h2>
+            <p className="text-muted">Choose to upload a file (PDF/Image) or paste text directly.</p>
+            
+            <ul className="nav nav-tabs mb-3">
+                <li className="nav-item">
+                    <button className={`nav-link ${activeTab === 'file' ? 'active' : ''}`} onClick={() => setActiveTab('file')}>Upload File</button>
+                </li>
+                <li className="nav-item">
+                    <button className={`nav-link ${activeTab === 'text' ? 'active' : ''}`} onClick={() => setActiveTab('text')}>Paste Text</button>
+                </li>
+            </ul>
 
-              {/* File Upload Input */}
-              <div className="mb-3">
-                <label className="form-label">Choose a document (PDF)</label>
-                <input 
-                  type="file" 
-                  className="form-control" 
-                  onChange={handleFileChange} 
-                />
-              </div>
-
-              {/* Upload Button */}
-              <div className="d-grid">
-                <button 
-                  className={`btn ${loading ? "btn-secondary" : "btn-primary"}`} 
-                  onClick={handleUpload} 
-                  disabled={loading}
-                >
-                  {loading ? "Uploading..." : "Upload"}
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    {activeTab === 'file' ? (
+                        <input className="form-control" type="file" onChange={(e) => setFile(e.target.files[0])} accept=".pdf,.png,.jpg,.jpeg" />
+                    ) : (
+                        <textarea className="form-control" value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste your document text here..." rows="10" />
+                    )}
+                </div>
+                <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span className="ms-2">Analyzing...</span>
+                        </>
+                    ) : 'Analyze Now'}
                 </button>
-              </div>
-
-              {/* Loading State */}
-              {loading && (
-                <div className="text-center mt-4">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Analyzing...</span>
-                  </div>
-                  <p className="mt-2">Analyzing document, please wait...</p>
-                </div>
-              )}
-
-              {/* Response Section */}
-              {response && !response.error && (
-                <div className="mt-4">
-                  <div className="card border-primary shadow-sm">
-                    <div className="card-header bg-primary text-white">
-                      📄 {response.filename || "Uploaded Document"}
-                    </div>
-                    <div className="card-body">
-                      <h5 className="card-title">Summary</h5>
-                      <p className="card-text">{response.summary}</p>
-
-                      <h5 className="mt-4">🚩 Potential Risks</h5>
-                      <ul className="list-group">
-                        {response.red_flags && response.red_flags.length > 0 ? (
-                          response.red_flags.map((flag, i) => (
-                            <li 
-                              key={i} 
-                              className="list-group-item list-group-item-danger"
-                            >
-                              {flag}
-                            </li>
-                          ))
-                        ) : (
-                          <li className="list-group-item">
-                            ✅ No risks identified.
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Error Response */}
-              {response && response.error && (
-                <div className="alert alert-danger mt-4">
-                  {response.error}
-                </div>
-              )}
-            </div>
-          </div>
+            </form>
+            {error && <p className="alert alert-danger mt-3">{error}</p>}
         </div>
-      </div>
+        <div className="col-lg-5 text-center d-none d-lg-block">
+            <img src={uploadImage} alt="Upload Illustration" className="img-fluid" />
+        </div>
     </div>
   );
-}
+};
+
+export default Upload;

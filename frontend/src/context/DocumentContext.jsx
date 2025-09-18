@@ -1,32 +1,26 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from 'react';
 
-// Create Context
-export const DocumentContext = createContext();
+const DocumentContext = createContext();
 
-// Provider Component
-export function DocumentProvider({ children }) {
-  const [documents, setDocuments] = useState([]);
+export const useDocuments = () => useContext(DocumentContext);
 
-  // Add a new document
-  const addDocument = (doc) => {
-    setDocuments((prev) => [...prev, doc]);
-  };
+export const DocumentProvider = ({ children }) => {
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // Replace entire list (e.g., after fetching from backend)
-  const setAllDocuments = (docs) => {
-    setDocuments(docs);
-  };
-
-  // Clear history (optional helper)
-  const clearDocuments = () => {
-    setDocuments([]);
+  const value = {
+    analysisResult,
+    setAnalysisResult,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
   };
 
   return (
-    <DocumentContext.Provider
-      value={{ documents, addDocument, setAllDocuments, clearDocuments }}
-    >
+    <DocumentContext.Provider value={value}>
       {children}
     </DocumentContext.Provider>
   );
-}
+};
