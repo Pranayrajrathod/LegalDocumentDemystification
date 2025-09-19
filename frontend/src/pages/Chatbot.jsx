@@ -6,7 +6,9 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Ask me about the most recently analyzed document.' },
+    { sender: 'bot', text: "Hello! I'm the AI Assistant for the TOS Analyzer." },
+    { sender: 'bot', text: "After you analyze a document, you can ask me questions about it right here." },
+    { sender: 'bot', text: "For example, try asking 'What are the risks?' or 'Give me a summary'." },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +28,8 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/chatbot`, { message: input });
+      // Corrected API endpoint URL
+      const response = await axios.post(`${API_URL}/api/chatbot`, { message: input });
       const botMessage = { sender: 'bot', text: response.data.reply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {

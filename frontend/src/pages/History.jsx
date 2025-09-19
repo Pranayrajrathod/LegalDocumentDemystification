@@ -12,7 +12,8 @@ const History = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`${API_URL}/history`);
+        // The fix is applied in the URL below
+        const response = await axios.get(`${API_URL}/api/history`);
         setHistory(response.data);
       } catch (err) {
         setError('Failed to fetch analysis history.');
@@ -42,7 +43,7 @@ const History = () => {
       {history.length > 0 ? (
         <div>
           {history.map((doc) => (
-            <DocumentCard key={doc._id} document={doc} />
+            <DocumentCard key={doc._id.$oid} document={doc} />
           ))}
         </div>
       ) : (

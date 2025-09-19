@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -23,8 +23,12 @@ try:
 except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
 
+# --- Register API Routes (Blueprints) ---
 from routes.api_routes import api_bp
-app.register_blueprint(api_bp, url_prefix="/")
+from routes.news_routes import news_bp # <-- ADD THIS IMPORT
+
+app.register_blueprint(api_bp, url_prefix="/api")
+app.register_blueprint(news_bp, url_prefix="/api") # <-- ADD THIS LINE
 
 @app.route("/ping", methods=["GET"])
 def ping():

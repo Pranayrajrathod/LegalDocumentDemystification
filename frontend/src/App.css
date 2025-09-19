@@ -43,3 +43,38 @@
     align-self: flex-start;
     border-bottom-left-radius: 0.5rem;
 }
+.vertical-news-stack {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.news-stack-item {
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+  background-color: white;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* ... (keep all your existing CSS) ... */
+
+/* New Style for the Risk Indicator */
+.risk-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0; /* Prevents the dot from shrinking */
+}
+
+.news-stack-item.faded {
+  opacity: 0.5;
+  /* Creates a nice fade-to-white effect */
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.news-stack-item:last-of-type {
+    border-bottom: none;
+}

@@ -16,7 +16,7 @@ const Upload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError(''); // Clear previous errors
     setAnalysisResult(null);
 
     try {
@@ -24,11 +24,11 @@ const Upload = () => {
       if (activeTab === 'file' && file) {
         const formData = new FormData();
         formData.append('file', file);
-        response = await axios.post(`${API_URL}/analyze`, formData, {
+        response = await axios.post(`${API_URL}/api/analyze`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else if (activeTab === 'text' && text) {
-        response = await axios.post(`${API_URL}/analyze`, { text });
+        response = await axios.post(`${API_URL}/api/analyze`, { text });
       } else {
         setError('Please select a file or paste some text.');
         setIsLoading(false);
@@ -37,12 +37,14 @@ const Upload = () => {
       setAnalysisResult(response.data);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred during analysis.');
+      // ** THE FIX IS HERE **
+      // Display the specific error message from the backend response
+      setError(err.response?.data?.error || 'An unknown error occurred during analysis.');
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="row align-items-center">
         <div className="col-lg-7">

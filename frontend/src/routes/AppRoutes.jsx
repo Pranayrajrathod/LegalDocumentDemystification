@@ -6,6 +6,8 @@ import Dashboard from '../pages/Dashboard';
 import History from '../pages/History';
 import Chatbot from '../pages/Chatbot';
 import About from '../pages/About';
+import NewsAlerts from '../pages/NewsAlerts'; 
+
 
 const AppRoutes = () => {
   return (
@@ -15,6 +17,7 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/history" element={<History />} />
       <Route path="/chatbot" element={<Chatbot />} />
+      <Route path="/alerts" element={<NewsAlerts />} />
       <Route path="/about" element={<About />} />
     </Routes>
   );

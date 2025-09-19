@@ -6,7 +6,7 @@ from flask import Blueprint, request, jsonify, current_app
 from bson import ObjectId
 
 from services.ocr_service import extract_text_from_file_or_bytes
-from services.analysis_service import summarize_text, find_red_flags
+from services.gemini_service import analyze_text_with_gemini # <-- Import the new service
 from services.chatbot_service import get_chatbot_response
 
 api_bp = Blueprint("api", __name__)
@@ -18,6 +18,7 @@ def serialize_doc(doc):
 
 @api_bp.route("/analyze", methods=["POST"])
 def analyze():
+    """Handles file/text input and gets analysis from Gemini."""
     try:
         db = current_app.config["db"]
         text, filename = "", "pasted_text.txt"
@@ -39,26 +40,25 @@ def analyze():
             os.remove(filepath)
             if not text.strip(): return jsonify({"error": "No text extracted from file"}), 400
 
-        summary = summarize_text(text)
-        red_flags = find_red_flags(text)
+        # --- Single call to the new Gemini service ---
+        result = analyze_text_with_gemini(text)
 
-        doc = {"filename": filename, "summary": summary, "red_flags": red_flags, "createdAt": datetime.utcnow()}
-        result = db.tos_results.insert_one(doc)
-        doc["_id"] = str(result.inserted_id)
-        return jsonify(serialize_doc(doc)), 200
+        doc = {"filename": filename, "summary": result.get("summary"), "red_flags": result.get("red_flags"), "createdAt": datetime.utcnow()}
+        db.tos_results.insert_one(doc)
+        doc["_id"] = str(doc.pop('_id'))
+        
+        return jsonify(doc), 200
 
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": f"An unexpected server error: {str(e)}"}), 500
 
+# --- History and Chatbot routes are unchanged ---
 @api_bp.route("/history", methods=["GET"])
 def get_history():
-    try:
-        db = current_app.config["db"]
-        results = list(db.tos_results.find({}).sort("createdAt", -1))
-        return jsonify([serialize_doc(r) for r in results]), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    db = current_app.config["db"]
+    results = list(db.tos_results.find({}).sort("createdAt", -1))
+    return jsonify([serialize_doc(r) for r in results]), 200
 
 @api_bp.route("/chatbot", methods=["POST"])
 def chat():
