@@ -1,5 +1,12 @@
 # Legal Document Demystification: An AI-Powered TOS Analyzer
 
+
+## 🚀 Live Demo
+
+**[View the live application here](https://legal-document-demystification.vercel.app/)**
+
+> **Disclaimer:** The live demo is hosted on a free cloud tier with limited resources. Please be mindful and avoid submitting multiple large documents for analysis.
+
 An intelligent platform that uses AI to translate complex legal jargon into simple, actionable insights, empowering users to understand the terms they are agreeing to.
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
