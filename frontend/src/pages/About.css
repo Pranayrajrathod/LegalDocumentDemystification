@@ -1,0 +1,63 @@
+/* src/pages/About.css */
+
+.about-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 2rem 1rem;
+}
+
+.about-card {
+  max-width: 700px;
+  text-align: center;
+  padding: 3rem;
+  background: rgba(33, 40, 51, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.about-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 2rem;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 25px rgba(88, 166, 255, 0.3);
+  /* Add a smooth transition for the hover effect */
+  transition: transform 0.7s ease-in-out, box-shadow 0.7s ease-in-out;
+}
+
+.about-logo:hover {
+  /* Enlarge, flip 360 degrees, and increase the shine effect */
+  transform: scale(1.25) rotateY(360deg);
+  box-shadow: 0 0 45px rgba(88, 166, 255, 0.7);
+}
+
+.page-title {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.about-content p {
+  color: #8b949e;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.about-content .lead-text {
+  font-size: 1.2rem;
+  color: #c9d1d9;
+  margin-bottom: 1.5rem;
+}
+
+.about-content strong {
+  color: #58a6ff;
+  font-weight: 600;
+}
+

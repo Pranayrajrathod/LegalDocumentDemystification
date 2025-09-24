@@ -1,0 +1,40 @@
+/* src/components/Footer.css */
+
+.app-footer {
+  /* Use a semi-transparent background to hint at the particle animation behind it */
+  background-color: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #8b949e;
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-top: auto; /* Pushes the footer to the bottom of the content */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+}
+
+.app-footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.team-credit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.team-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.team-credit strong {
+  color: #c9d1d9;
+  font-weight: 600;
+}

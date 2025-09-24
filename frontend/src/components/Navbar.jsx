@@ -1,35 +1,55 @@
-import React from 'react';
+// src/components/Navbar.jsx
+
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import reactLogo from '../assets/react.svg';
+import { motion } from 'framer-motion';
+import anantam from '../assets/ananta.jpg';
+import './Navbar.css'; // We will create this CSS file
 
 const Navbar = () => {
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
+  const links = [
+    { to: "/upload", name: "Analyze" },
+    { to: "/history", name: "History" },
+    { to: "/chatbot", name: "Chatbot" },
+    { to: "/alerts", name: "News Alerts" },
+    { to: "/about", name: "About" },
+  ];
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav className="app-navbar">
       <div className="container">
-        <NavLink className="navbar-brand d-flex align-items-center" to="/">
-          <img src={reactLogo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top me-2" />
-          TOS Analyzer
+        <NavLink className="nav-brand" to="/" onClick={() => setIsNavCollapsed(true)}>
+          <img src={anantam} alt="Logo" className="nav-logo" />
+          <span>Anantam</span>
         </NavLink>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
+
+        <button className="nav-toggler" onClick={handleNavCollapse}>
+          <div className={`hamburger ${!isNavCollapsed ? "is-active" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/upload">Analyze</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/history">History</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/chatbot">Chatbot</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/alerts">News Alerts</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/about">About</NavLink>
-            </li>
+
+        <div className={`nav-collapse ${isNavCollapsed ? 'collapsed' : ''}`}>
+          <ul className="nav-links">
+            {links.map(link => (
+              <li key={link.name} className="nav-item">
+                <NavLink 
+                  className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} 
+                  to={link.to}
+                  onClick={() => setIsNavCollapsed(true)}
+                >
+                  {link.name}
+                  {/* The animated underline */}
+                  {({ isActive }) => isActive && <motion.div className="active-link-indicator" layoutId="activeLink" />}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

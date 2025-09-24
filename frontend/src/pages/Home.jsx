@@ -1,91 +1,124 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import homeImage1 from '../assets/home1.png';
+import { motion, AnimatePresence } from 'framer-motion';
+import homeImage1 from '../assets/home1.png'; // Make sure this path is correct
+import './Home.css'; 
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-// This sub-component for displaying a single news item doesn't need to be changed.
-const VerticalNewsCard = ({ article, isFaded = false }) => (
-    <div className={`news-stack-item ${isFaded ? 'faded' : ''}`}>
-        <h6 className="mb-1">{article?.title || 'Untitled Article'}</h6>
-        <p className="mb-0 text-muted small">{article?.summary?.substring(0, 80)}...</p>
-    </div>
+// Sub-component for the animated news ticker item
+const NewsTickerCard = ({ article }) => (
+    <motion.div
+        key={article.link}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        className="news-ticker-item"
+    >
+        <h5 className="mb-2 fw-bold">{article?.title || 'Untitled Article'}</h5>
+        <p className="mb-0 small">{article?.summary?.substring(0, 120)}...</p>
+    </motion.div>
 );
 
 const Home = () => {
-  const [latestNews, setLatestNews] = useState([]);
-  const [error, setError] = useState('');
+    const [latestNews, setLatestNews] = useState([]);
+    const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
+    const [error, setError] = useState('');
 
-  // This data fetching logic remains the same.
-  useEffect(() => {
-    const fetchLatestNews = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/news?limit=5`);
-        if (Array.isArray(response.data)) {
-            setLatestNews(response.data);
+    useEffect(() => {
+        const fetchLatestNews = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/api/news?limit=5`);
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    setLatestNews(response.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch latest news:", err);
+                setError('Could not load news alerts.');
+            }
+        };
+        fetchLatestNews();
+    }, []);
+
+    useEffect(() => {
+        if (latestNews.length > 1) {
+            const timer = setInterval(() => {
+                setCurrentNewsIndex(prevIndex => (prevIndex + 1) % latestNews.length);
+            }, 5000);
+            return () => clearInterval(timer);
         }
-      } catch (err) {
-        console.error("Failed to fetch latest news:", err);
-        setError('Could not load news alerts.');
-      }
+    }, [latestNews]);
+    
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.1 } }
     };
-    fetchLatestNews();
-  }, []);
 
-  return (
-    <div className="container my-5">
-      {/* --- TOP HERO SECTION --- */}
-      <div className="row mb-5">
-        <div className="col-12 text-center">
-          <h1 className="display-4 fw-bold text-primary">Demystify Legal Jargon Instantly</h1>
-          <p className="lead my-4">
-            Upload your Terms of Service, Privacy Policies, or any legal document,
-            and get a simple, easy-to-understand summary and potential red flags.
-          </p>
-          <Link to="/upload" className="btn btn-primary btn-lg">
-            Get Started
-          </Link>
-        </div>
-      </div>
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+    };
 
-      {/* --- BOTTOM IMAGE & NEWS SECTION --- */}
-      <div className="row justify-content-center">
-        <div className="col-lg-8 text-center mb-5">
-  <h1 className="display-5 fw-bold text-info position-relative d-inline-block">
-    Latest News
-    <span 
-      className="d-block mx-auto mt-2" 
-      style={{ 
-        width: '60px', 
-        height: '4px', 
-        background: 'linear-gradient(90deg, #0dcaf0, #6610f2)', 
-        borderRadius: '2px',
-        animation: 'pulse 1.5s infinite'
-      }}
-    ></span>
-  </h1>
-</div>
-
-        {/* This column holds the centered news stack */}
-        <div className="col-lg-6">
-            {latestNews.length > 0 && (
-                <div className="vertical-news-stack card shadow-sm">
-                    {latestNews.map((article, index) => (
-                        <VerticalNewsCard key={article.link} article={article} isFaded={index > 0} />
-                    ))}
-                    <div className="p-3">
-                        <Link to="/alerts" className="btn btn-secondary w-100">
-                            Read Latest News
+    return (
+        <div className="container my-5 py-5 home-container">
+            {/* --- HERO SECTION --- */}
+            <motion.div
+                className="row mb-5 pb-5 align-items-center"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <div className="col-lg-7 text-center text-lg-start">
+                    <motion.h1 className="display-3 fw-bold gradient-text" variants={itemVariants}>
+                        Demystify Legal Jargon Instantly
+                    </motion.h1>
+                    <motion.p className="lead my-4 text-subtle" variants={itemVariants}>
+                        Stop guessing. Upload your Terms of Service or Privacy Policies and get simple summaries with clear red flags in seconds.
+                    </motion.p>
+                    <motion.div variants={itemVariants}>
+                        <Link to="/upload" className="btn btn-custom-primary btn-lg">
+                            Analyze Document Now
                         </Link>
-                    </div>
+                    </motion.div>
                 </div>
-            )}
-            {error && <div className="alert alert-warning mt-3 text-center">{error}</div>}
+
+                <div className="col-lg-5 d-none d-lg-block text-center">
+                   <motion.img 
+                        src={homeImage1} 
+                        alt="Legal document analysis illustration" 
+                        className="img-fluid hero-image"
+                        variants={itemVariants}
+                    />
+                </div>
+            </motion.div>
+
+            {/* --- NEWS & ALERTS SECTION --- */}
+            <div className="row justify-content-center mt-5">
+                <div className="col-12 text-center mb-4">
+                    <h2 className="display-5 fw-bold heading-bright">Stay Informed</h2>
+                    <p className="section-subtitle">Latest alerts on digital privacy and online scams</p>
+                </div>
+
+                <div className="col-lg-8">
+                    {error && <div className="alert alert-custom-error">{error}</div>}
+                    {latestNews.length > 0 && (
+                        <div className="glass-card p-4">
+                            <AnimatePresence mode="wait">
+                               <NewsTickerCard article={latestNews[currentNewsIndex]} />
+                            </AnimatePresence>
+                             <div className="mt-4">
+                                <Link to="/alerts" className="btn btn-custom-outline w-100">
+                                    View All Alerts
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Home;

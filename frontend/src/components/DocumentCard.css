@@ -1,0 +1,196 @@
+/* src/components/DocumentCard.css */
+
+.document-card {
+  background: rgba(33, 40, 51, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.document-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filename {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.5rem;
+  word-break: break-all;
+}
+
+.timestamp {
+  color: #8b949e;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0;
+}
+
+.card-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  color: #c9d1d9;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  border-left: 3px solid #58a6ff;
+  padding-left: 10px;
+}
+
+.summary-text {
+  color: #c9d1d9;
+  line-height: 1.6;
+}
+
+.key-points-list {
+  list-style: none;
+  padding: 0;
+}
+
+.key-point {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.point-icon {
+  margin-right: 12px;
+  font-size: 1.2rem;
+  margin-top: -2px;
+}
+
+/* --- THE IMPORTANT COLOR CODING --- */
+.risk-high {
+  color: #f85149; /* Bright Red for high alert */
+}
+
+.risk-medium {
+  color: #f0b90c; /* Amber/Yellow for caution */
+}
+
+.risk-low {
+  color: #2ea043; /* Green for positive/standard points */
+}
+
+.risk-neutral {
+  color: #8b949e; /* Grey for informational points */
+}
+/* src/components/DocumentCard.css */
+
+/* ... (keep all the existing styles from the top of the file) ... */
+/* ... (.document-card, .card-header, .filename, etc.) ... */
+
+.key-points-list {
+  list-style: none;
+  padding: 0;
+}
+
+.key-point {
+  /* UPDATED: Add padding for the dot and set up positioning */
+  position: relative;
+  padding-left: 22px; 
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #c9d1d9; /* Set a consistent base text color */
+}
+
+/* UPDATED: This creates the colored dot icon using CSS */
+.key-point::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px; /* Adjust for vertical alignment */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* --- THE IMPORTANT COLOR CODING FOR THE DOTS --- */
+.risk-high::before {
+  background-color: #b50900; /* Red */
+}
+
+.risk-medium::before {
+  background-color: #ff9500; /* Yellow */
+}
+
+.risk-low::before {
+  background-color: #ffee00; /* Green */
+}
+
+.risk-neutral::before {
+  background-color: #8b949e; /* Grey */
+}
+
+/* REMOVED: You can delete the old .point-icon and individual .risk-* color styles */
+/* .point-icon { ... }
+  .risk-high { color: ... }
+  .risk-medium { color: ... }
+  .risk-low { color: ... }
+  .risk-neutral { color: ... }
+*/
+/* src/components/DocumentCard.css */
+
+.document-card {
+  /* ... (keep existing styles) ... */
+  cursor: pointer; /* NEW: Indicates the card is clickable */
+}
+
+/* ... (keep existing styles) ... */
+
+/* NEW: This class wraps the content that expands/collapses */
+.card-collapsible-content {
+  overflow: hidden; /* Crucial for the height animation to work smoothly */
+}
+
+.card-header {
+  /* UPDATED: Use flexbox for layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* NEW: Wrapper for the text to separate it from the icon */
+.header-content {
+  flex-grow: 1;
+}
+
+.filename {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.5rem;
+  word-break: break-all;
+}
+
+/* ... (keep other styles) ... */
+
+/* NEW: Styles to create the arrow shape with CSS */
+.collapse-icon {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #8b949e; /* This creates the downward-pointing triangle */
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+}

@@ -1,6 +1,9 @@
+// src/pages/Chatbot.jsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ChatbotWindowCard from '../components/ChatbotWindowCard';
+import './Chatbot.css';
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -18,7 +21,7 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, isLoading]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -28,12 +31,11 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Corrected API endpoint URL
       const response = await axios.post(`${API_URL}/api/chatbot`, { message: input });
       const botMessage = { sender: 'bot', text: response.data.reply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
-      const errorMessage = { sender: 'bot', text: 'Sorry, I encountered an error.' };
+      const errorMessage = { sender: 'bot', text: 'Sorry, I encountered an error and could not get a response.' };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -41,19 +43,20 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="row justify-content-center">
+    <div className="chatbot-page-container">
+      <h2 className="page-title">Chat with the AI Assistant</h2>
+      <div className="row justify-content-center">
         <div className="col-lg-8">
-            <h2 className="text-center mb-4">Chat with the AI Assistant</h2>
-            <ChatbotWindowCard
-                messages={messages}
-                input={input}
-                setInput={setInput}
-                handleSend={handleSend}
-                isLoading={isLoading}
-            />
-            {/* This empty div is a reference for autoscrolling */}
-            <div ref={messagesEndRef} />
+          <ChatbotWindowCard
+            messages={messages}
+            input={input}
+            setInput={setInput}
+            handleSend={handleSend}
+            isLoading={isLoading}
+            messagesEndRef={messagesEndRef}
+          />
         </div>
+      </div>
     </div>
   );
 };

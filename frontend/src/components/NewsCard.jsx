@@ -1,29 +1,29 @@
 // src/components/NewsCard.jsx
+
 import React from 'react';
+import './NewsCard.css';
 
 const NewsCard = ({ article }) => {
-  const formatDate = (dateObj) => {
-    if (!dateObj || !dateObj.$date) return 'Date not available';
-    return new Date(dateObj.$date).toLocaleDateString('en-US', {
-      year: 'numeric', month: 'long', day: 'numeric',
-    });
-  };
-
-  const summaryText = article?.summary ? article.summary.substring(0, 150) + '...' : 'No summary available.';
+  // A simple helper to format the date if it exists
+  const formattedDate = article.published_at
+    ? new Date(article.published_at).toLocaleDateString("en-US", {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    : null;
 
   return (
-    <div className="card h-100 shadow-sm">
-      <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{article?.title || 'Untitled Article'}</h5>
-        <p className="card-text text-muted flex-grow-1">{summaryText}</p>
-        <div className="mt-auto d-flex justify-content-between align-items-center">
-            <small className="text-muted">{formatDate(article?.published)}</small>
-            <a href={article?.link} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-primary">
-                Read More
-            </a>
+    <a href={article.link} target="_blank" rel="noopener noreferrer" className="news-card">
+      <div className="card-content">
+        <h5 className="news-title">{article.title || 'Untitled Article'}</h5>
+        <p className="news-summary">{article.summary || 'No summary available.'}</p>
+        <div className="news-footer">
+          <span className="news-source">{article.source || 'Unknown Source'}</span>
+          {formattedDate && <span className="news-date">{formattedDate}</span>}
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

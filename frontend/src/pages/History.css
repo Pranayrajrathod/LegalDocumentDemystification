@@ -1,0 +1,87 @@
+/* src/pages/History.css */
+
+.history-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-title {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.status-text {
+  font-size: 1.2rem;
+  color: #8b949e;
+}
+
+/* Custom Loader Spinner */
+.loader-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left-color: #58a6ff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* src/pages/History.css */
+
+/* --- Add these styles at the end of the file --- */
+
+/* --- Risk Legend Styles --- */
+.risk-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem; /* Sets space between legend items */
+  margin-bottom: 3rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(33, 40, 51, 0.2); /* Subtle background */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: 450px; /* Or adjust as needed */
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap; /* Allows legend to wrap on smaller screens */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Sets space between the dot and the text */
+  color: #c9d1d9;
+  font-size: 0.9rem;
+}
+
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* These colors must match the ones in DocumentCard.css for consistency */
+.dot-high { background-color: #b50900; } /* UPDATED Red */
+.dot-medium { background-color: #ff9500; } /* UPDATED Orange/Yellow */
+.dot-low { background-color: #ffee00; } /* UPDATED Yellow/Green */

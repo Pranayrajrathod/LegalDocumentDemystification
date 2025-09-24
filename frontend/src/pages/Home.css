@@ -1,0 +1,128 @@
+/* --- General Styling & Animated Background --- */
+body {
+    color: #c9d1d9;
+    background: linear-gradient(135deg, #0d1117, #161b22, #010409);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s ease infinite;
+}
+
+.home-container {
+    overflow-x: hidden;
+}
+
+/* --- Custom Text Color Classes --- */
+.heading-bright {
+    color: #ffffff;
+}
+
+.text-subtle {
+    color: rgba(201, 209, 217, 0.7); /* Replaces text-white-50 */
+}
+
+/* --- Hero Section Styling --- */
+.gradient-text {
+    background: linear-gradient(90deg, #33a0ff, #c381ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 2rem rgba(80, 150, 255, 0.3));
+    transition: transform 0.3s ease-in-out;
+}
+
+.hero-image:hover {
+    transform: scale(1.03);
+}
+
+/* --- Custom Button Styles (Replaces .btn-primary) --- */
+.btn-custom-primary {
+    background-color: #2386fd;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(35, 134, 253, 0.2);
+}
+
+.btn-custom-primary:hover {
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(35, 134, 253, 0.3);
+}
+
+
+/* --- Glassmorphism Card for News --- */
+.glass-card {
+    background: rgba(33, 40, 51, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* --- News Ticker Specific Styling --- */
+.news-ticker-item {
+    text-align: center;
+}
+
+/* --- Color & Style Fixes for News Section --- */
+.section-subtitle {
+  color: #8b949e;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.btn-custom-outline {
+  color: #58a6ff;
+  border: 1px solid #58a6ff;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+}
+
+.btn-custom-outline:hover {
+  color: #ffffff;
+  background-color: #58a6ff;
+  border-color: #58a6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(88, 166, 255, 0.2);
+}
+
+.news-ticker-item h5 {
+    color: #c9d1d9;
+}
+
+.news-ticker-item p {
+    color: #8b949e;
+}
+
+/* --- Custom Alert Box (Replaces .alert-danger) --- */
+.alert-custom-error {
+    background-color: rgba(248, 81, 73, 0.1);
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    color: #f85149;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* --- Animation Keyframes for the Background --- */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

@@ -1,0 +1,198 @@
+.upload-container {
+    background: rgba(33, 40, 51, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    text-align: center;
+}
+
+.upload-title {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+    color: #8b949e;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Custom Animated Tab Switcher */
+.tab-switcher {
+    display: flex;
+    background-color: rgba(13, 17, 23, 0.5);
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    color: #8b949e;
+    cursor: pointer;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    border-radius: 8px;
+}
+
+.tab-button.active {
+    color: #ffffff;
+}
+
+.tab-active-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(88, 166, 255, 0.2);
+    border: 1px solid rgba(88, 166, 255, 0.4);
+    border-radius: 8px;
+    z-index: -1;
+}
+
+/* Dropzone Styles */
+.dropzone {
+    border: 2px dashed #444c56;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    background-color: rgba(13, 17, 23, 0.3);
+}
+
+.dropzone:hover {
+    border-color: #58a6ff;
+    background-color: rgba(88, 166, 255, 0.1);
+}
+
+.dropzone.dragging-over {
+    border-color: #58a6ff;
+    border-style: solid;
+    background-color: rgba(88, 166, 255, 0.2);
+}
+
+.dropzone-prompt .upload-icon {
+    font-size: 2.5rem;
+}
+
+.dropzone-prompt b {
+    color: #c9d1d9;
+}
+
+.dropzone-prompt .small-text {
+    font-size: 0.85rem;
+    color: #8b949e;
+}
+
+.file-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(88, 166, 255, 0.1);
+    border-radius: 8px;
+    color: #c9d1d9;
+}
+
+.file-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.file-name {
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: #f85149;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+/* Text Area Styles */
+.text-input-area {
+    width: 100%;
+    background-color: rgba(13, 17, 23, 0.5);
+    border: 1px solid #444c56;
+    border-radius: 12px;
+    color: #c9d1d9;
+    padding: 1rem;
+    resize: vertical;
+}
+
+.text-input-area:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+/* Reusable Custom Button & Alert (Add if not in a global stylesheet) */
+.btn-custom-primary {
+    background-color: #2386fd;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(35, 134, 253, 0.2);
+}
+
+.btn-custom-primary:hover:not(:disabled) {
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(35, 134, 253, 0.3);
+}
+
+.btn-custom-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.alert-custom-error {
+    background-color: rgba(248, 81, 73, 0.1);
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    color: #f85149;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Loading Spinner for Button */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
