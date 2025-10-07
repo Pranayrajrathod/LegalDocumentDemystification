@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import homeImage1 from '../assets/home1.png'; // Make sure this path is correct
-import './Home.css'; 
+import homeImage1 from '../assets/home1.png';
+import homeImage2 from '../assets/home2.png'; // Added for the new section
+import './Home.css';
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-// Sub-component for the animated news ticker item
+// Sub-component for the animated news ticker item (unchanged)
 const NewsTickerCard = ({ article }) => (
     <motion.div
         key={article.link}
@@ -83,7 +84,6 @@ const Home = () => {
                         </Link>
                     </motion.div>
                 </div>
-
                 <div className="col-lg-5 d-none d-lg-block text-center">
                    <motion.img 
                         src={homeImage1} 
@@ -94,13 +94,68 @@ const Home = () => {
                 </div>
             </motion.div>
 
+            {/* --- NEW: HOW IT WORKS SECTION --- */}
+            <div className="row text-center my-5 py-5">
+                <div className="col-12 mb-5">
+                    <h2 className="display-5 fw-bold heading-bright">A Simple, Powerful Process</h2>
+                    <p className="section-subtitle">Get clarity in three easy steps.</p>
+                </div>
+                <div className="col-md-4">
+                    <motion.div className="info-card" whileHover={{ y: -10 }}>
+                        <div className="info-card-icon">📤</div>
+                        <h3>1. Submit</h3>
+                        <p>Upload a PDF, an image of a contract, or simply paste the text of any legal document.</p>
+                    </motion.div>
+                </div>
+                <div className="col-md-4">
+                    <motion.div className="info-card" whileHover={{ y: -10 }}>
+                        <div className="info-card-icon">🤖</div>
+                        <h3>2. AI Analyzes</h3>
+                        <p>Our Gemini-powered AI reads the entire text to generate a summary and detect potential risks.</p>
+                    </motion.div>
+                </div>
+                <div className="col-md-4">
+                    <motion.div className="info-card" whileHover={{ y: -10 }}>
+                        <div className="info-card-icon">🚦</div>
+                        <h3>3. Get Insights</h3>
+                        <p>Receive a plain-English summary and a list of red flags with a color-coded severity rating.</p>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* --- NEW: WHO IS THIS FOR SECTION --- */}
+            <div className="row my-5 py-5 align-items-center bg-light rounded-5 p-5">
+            <div className="col-lg-6">
+                <h2 className="display-5 fw-bold text-primary">Designed for Everyone</h2>
+                <p className="text-muted mt-3">
+                Whether you're a freelancer, a student, or just a curious consumer, our tool empowers you to understand the agreements that shape your digital life.
+                </p>
+                <ul className="list-unstyled mt-4">
+                <li className="mb-3 d-flex align-items-start">
+                    <span className="text-success me-2 fw-bold">✓</span>
+                    <span>Review freelance and client contracts</span>
+                </li>
+                <li className="mb-3 d-flex align-items-start">
+                    <span className="text-success me-2 fw-bold">✓</span>
+                    <span>Understand rental and housing agreements</span>
+                </li>
+                <li className="mb-3 d-flex align-items-start">
+                    <span className="text-success me-2 fw-bold">✓</span>
+                    <span>Check application privacy policies before you click 'agree'</span>
+                </li>
+                </ul>
+            </div>
+            <div className="col-lg-6 text-center">
+                <img src={homeImage2} alt="People collaborating" className="img-fluid" />
+            </div>
+            </div>
+
             {/* --- NEWS & ALERTS SECTION --- */}
             <div className="row justify-content-center mt-5">
                 <div className="col-12 text-center mb-4">
                     <h2 className="display-5 fw-bold heading-bright">Stay Informed</h2>
                     <p className="section-subtitle">Latest alerts on digital privacy and online scams</p>
                 </div>
-
                 <div className="col-lg-8">
                     {error && <div className="alert alert-custom-error">{error}</div>}
                     {latestNews.length > 0 && (

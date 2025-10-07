@@ -126,3 +126,64 @@ body {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+.text-subtle,
+.section-subtitle {
+  color: var(--text-muted); /* Use the new readable muted color */
+}
+
+.heading-bright {
+  color: var(--text-dark); /* Use the new high-contrast dark color */
+}
+
+.btn-custom-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+  background: rgba(53, 53, 53, 0.7); /* Make glass slightly less transparent for readability */
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-dark); /* Ensure text inside is dark */
+}
+
+.btn-custom-outline {
+  color: var(--text-dark);
+  border-color: var(--text-dark);
+}
+
+.btn-custom-outline:hover {
+  color: #fff;
+  background-color: var(--text-dark);
+  border-color: var(--text-dark);
+}
+
+.info-card {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.info-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.bg-light-subtle {
+    background-color: #e9ecef; /* A slightly darker subtle background for contrast */
+}
